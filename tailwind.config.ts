@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Add game-specific colors
+				'game-primary': 'hsl(var(--game-primary))',
+				'game-secondary': 'hsl(var(--game-secondary))',
+				'game-accent': 'hsl(var(--game-accent))',
+				'game-correct': 'hsl(var(--game-correct))',
+				'game-incorrect': 'hsl(var(--game-incorrect))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
