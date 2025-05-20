@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import GameContainer from "@/components/GameContainer";
 import { Button } from "@/components/ui/button";
-import { MapPin } from "lucide-react";
+import { MapPin, Play } from "lucide-react";
 
 const Index = () => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -61,12 +61,15 @@ const Index = () => {
             </div>
           </div>
           
-          <Button
-            onClick={startGame}
-            className="bg-game-primary hover:bg-game-primary/90 px-8 py-6 text-lg"
-          >
-            Start Game
-          </Button>
+          <div className="animate-pulse">
+            <Button
+              onClick={startGame}
+              size="lg"
+              className="bg-game-primary hover:bg-game-primary/90 px-10 py-8 text-xl font-bold rounded-xl shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+            >
+              <Play className="mr-2 h-6 w-6" /> Start Exploring
+            </Button>
+          </div>
         </div>
       </div>
     );
