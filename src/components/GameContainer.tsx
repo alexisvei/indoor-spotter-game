@@ -6,6 +6,8 @@ import FloorSelector from "./FloorSelector";
 import MapSelector from "./MapSelector";
 import ScoreBoard from "./ScoreBoard";
 import ResultsSummary from "./ResultsSummary";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { CircleCheck, CircleX } from "lucide-react";
 
 interface RoundGuess {
   floor: number;
@@ -135,7 +137,8 @@ const GameContainer: React.FC = () => {
   }
   
   const currentGameRound = gameRounds[currentRound - 1];
-  
+  const correctFloorName = floorMaps.find(f => f.floor === currentGameRound.correctFloor)?.name;
+
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
       <ScoreBoard
@@ -160,6 +163,27 @@ const GameContainer: React.FC = () => {
             onSelectFloor={handleFloorSelect}
           />
           
+          {isGuessSubmitted && selectedFloor !== null && (
+            <Alert className={selectedFloor === currentGameRound.correctFloor 
+              ? "border-game-correct bg-game-correct/10 mb-2" 
+              : "border-game-incorrect bg-game-incorrect/10 mb-2"
+            }>
+              <div className="flex items-center gap-2">
+                {selectedFloor === currentGameRound.correctFloor ? (
+                  <CircleCheck className="h-5 w-5 text-game-correct" />
+                ) : (
+                  <CircleX className="h-5 w-5 text-game-incorrect" />
+                )}
+                <AlertDescription className="flex-1">
+                  {selectedFloor === currentGameRound.correctFloor 
+                    ? <span>Correct! This photo was taken on the <strong>{correctFloorName}</strong>.</span>
+                    : <span>Incorrect. This photo was taken on the <strong>{correctFloorName}</strong>, not on {floorMaps.find(f => f.floor === selectedFloor)?.name}.</span>
+                  }
+                </AlertDescription>
+              </div>
+            </Alert>
+          )}
+          
           <MapSelector
             selectedFloor={selectedFloor}
             floorMaps={floorMaps}
@@ -171,7 +195,7 @@ const GameContainer: React.FC = () => {
           />
           
           {isGuessSubmitted && (
-            <div className="p-4 rounded-lg bg-muted/30">
+            <div className="p-4 rounded-lg bg-card shadow-sm border">
               <h3 className="font-medium mb-2">Actual Location:</h3>
               <p>Floor: {floorMaps.find(f => f.floor === currentGameRound.correctFloor)?.name}</p>
               <p className="text-sm text-muted-foreground mt-1">{currentGameRound.description}</p>
