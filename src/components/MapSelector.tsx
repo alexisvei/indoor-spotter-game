@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FloorMap } from "@/data/gameData";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Circle, CircleCheck, CircleX } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface MapSelectorProps {
   selectedFloor: number | null;
@@ -12,6 +13,7 @@ interface MapSelectorProps {
   actualPosition?: { x: number; y: number } | null;
   showActual: boolean;
   isClickable: boolean;
+  onSubmitGuess?: () => void; // New prop for submitting guess
 }
 
 const MapSelector: React.FC<MapSelectorProps> = ({
@@ -22,6 +24,7 @@ const MapSelector: React.FC<MapSelectorProps> = ({
   actualPosition,
   showActual,
   isClickable,
+  onSubmitGuess,
 }) => {
   const selectedMap = floorMaps.find(f => f.floor === selectedFloor);
   
@@ -120,6 +123,18 @@ const MapSelector: React.FC<MapSelectorProps> = ({
               </>
             )}
           </div>
+          
+          {/* Add Confirm button when position is selected but not yet submitted */}
+          {guessedPosition && !showActual && selectedFloor !== null && onSubmitGuess && (
+            <div className="mt-3">
+              <Button 
+                onClick={onSubmitGuess} 
+                className="w-full bg-game-primary hover:bg-game-primary/90"
+              >
+                Confirmer ma réponse
+              </Button>
+            </div>
+          )}
           
           {showActual && guessedPosition && actualPosition && (
             <div className="mt-3">

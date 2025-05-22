@@ -111,13 +111,6 @@ const GameContainer: React.FC = () => {
     resetRoundState();
   };
   
-  // Auto-submit when both floor and position are selected
-  useEffect(() => {
-    if (selectedFloor !== null && selectedPosition !== null && !isGuessSubmitted) {
-      submitGuess();
-    }
-  }, [selectedFloor, selectedPosition, isGuessSubmitted]);
-  
   // Start the game automatically if not started
   useEffect(() => {
     if (!gameStarted) {
@@ -192,6 +185,7 @@ const GameContainer: React.FC = () => {
             actualPosition={isGuessSubmitted ? currentGameRound.correctPosition : null}
             showActual={isGuessSubmitted}
             isClickable={!isGuessSubmitted && selectedFloor !== null}
+            onSubmitGuess={submitGuess} // Pass new submit function
           />
           
           {isGuessSubmitted && (
