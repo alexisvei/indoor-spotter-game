@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Timer } from "lucide-react";
+import { Timer, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PhotoDisplayProps {
@@ -13,6 +13,7 @@ const PhotoDisplay: React.FC<PhotoDisplayProps> = ({ photoUrl, roundNumber }) =>
   const [showFullScreen, setShowFullScreen] = useState(true);
   const [timeLeft, setTimeLeft] = useState(3);
   const [imageViewed, setImageViewed] = useState(false);
+  const [showThumbnail, setShowThumbnail] = useState(true);
 
   useEffect(() => {
     if (showFullScreen) {
@@ -22,6 +23,7 @@ const PhotoDisplay: React.FC<PhotoDisplayProps> = ({ photoUrl, roundNumber }) =>
             clearInterval(timer);
             setShowFullScreen(false);
             setImageViewed(true);
+            setShowThumbnail(false);
             return 0;
           }
           return prev - 1;
@@ -37,6 +39,7 @@ const PhotoDisplay: React.FC<PhotoDisplayProps> = ({ photoUrl, roundNumber }) =>
     setShowFullScreen(true);
     setTimeLeft(3);
     setImageViewed(false);
+    setShowThumbnail(true);
   }, [roundNumber]);
 
   return (
@@ -61,17 +64,25 @@ const PhotoDisplay: React.FC<PhotoDisplayProps> = ({ photoUrl, roundNumber }) =>
         </DialogContent>
       </Dialog>
       
-      <div className={cn(
-        "photo-container transition-opacity duration-300",
-        imageViewed && "opacity-30 hover:opacity-100"
-      )}>
-        <img 
-          src={photoUrl} 
-          alt={`Round ${roundNumber} location`} 
-          className="w-full h-full object-cover"
-          onClick={() => !showFullScreen && setShowFullScreen(true)}
-        />
-      </div>
+      {showThumbnail ? (
+        <div className="photo-container">
+          <img 
+            src={photoUrl} 
+            alt={`Round ${roundNumber} location`} 
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ) : (
+        <div 
+          className="photo-container bg-muted flex items-center justify-center h-48 cursor-pointer border border-dashed border-muted-foreground"
+          onClick={() => setShowFullScreen(true)}
+        >
+          <div className="flex flex-col items-center gap-2 text-muted-foreground">
+            <ImageIcon className="h-8 w-8" />
+            <span className="text-sm">Click to view photo</span>
+          </div>
+        </div>
+      )}
       
       <p className="text-sm text-center text-muted-foreground">
         {imageViewed ? 
